@@ -30,3 +30,14 @@ Oh, one more thing. While I could define resources in Terraform directly, a nift
 
 Oh, right. First, I need to create a service account + key and grant it `roles/editor`. You will find that in `bootstrap_service_account.sh`. Also, as I go along, I will need to enable various APIs via clickops.
 
+OK, here we go. Let's define the VPC and subnet. You will find that under commit 6a7b4f64847bc97a8cdbb12c65362a0c1d161e3c.
+
+(I tried to apply that, and at this point I needed to enable the compute API).
+
+OK, network and subnet created (see commit 71e0629). One thing I learned: the docs for the Google modules are nearly useless; refer to the module file itself to learn how to use it.
+
+Now, I will create the [firewall rules](https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#firewall-rules).
+
+MAJOR VICTORY!!! When creating the firewall, I need to refer to the subnet CIDRs of the subnets I want to apply the firewall rule to. I found out how to do it dynamically!
+
+The subnet module outputs the created subnets. I used `terraform console` to play around with the returned values, and then found that I can simply use a list comprehension to loop over the outputs: `[for s in module.subnets.subnets: s.ip_cidr_range]`.
