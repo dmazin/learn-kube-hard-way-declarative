@@ -41,3 +41,5 @@ Now, I will create the [firewall rules](https://github.com/kelseyhightower/kuber
 MAJOR VICTORY!!! When creating the firewall, I need to refer to the subnet CIDRs of the subnets I want to apply the firewall rule to. I found out how to do it dynamically!
 
 The subnet module outputs the created subnets. I used `terraform console` to play around with the returned values, and then found that I can simply use a list comprehension to loop over the outputs: `[for s in module.subnets.subnets: s.ip_cidr_range]`.
+
+Wee! I feel great. My firewall rules match the output in Learn Kubernetes the Hard Way. See commit 2bb2eaa. Wrapping up for the day.
