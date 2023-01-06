@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"vpc","Source":"registry.terraform.io/terraform-google-modules/network/google//modules/subnets","Version":"6.0.0","Dir":".terraform/modules/vpc/modules/subnets"}]}
