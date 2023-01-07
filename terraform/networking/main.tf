@@ -89,7 +89,7 @@ module "firewall_rules" {
     description             = null
     direction               = "INGRESS"
     priority                = null
-    ranges                  = [for s in module.subnets.subnets: s.ip_cidr_range]
+    ranges                  = ["0.0.0.0/0"]
     source_tags             = null
     source_service_accounts = null
     target_tags             = null

@@ -1,4 +1,5 @@
 # Kubernetes the hard way in Terraform
+### 7 Jan 2023
 A couple days ago, I read Learn Kubernetes the Hard Way, and generally read about the architecture of Kubernetes. I also brushed up on Terraform. Starting today, I want to solidify these two adventures by implementing Learn Kubernetes the Hard Way using Terraform, Ansible, Kustomize (or Helm) and otherwise making it more of a repeatable, idempotent process.
 
 First, I will create a new project. I will not do this using Terraform, even though technically I could (within an organization). It's a fair bit of work, and it's a relatively rare thing to need to do.
@@ -43,3 +44,8 @@ MAJOR VICTORY!!! When creating the firewall, I need to refer to the subnet CIDRs
 The subnet module outputs the created subnets. I used `terraform console` to play around with the returned values, and then found that I can simply use a list comprehension to loop over the outputs: `[for s in module.subnets.subnets: s.ip_cidr_range]`.
 
 Wee! I feel great. My firewall rules match the output in Learn Kubernetes the Hard Way. See commit 2bb2eaa. Wrapping up for the day.
+
+### 7 Jan 2023
+I'm so excited about this project that I woke up on a Saturday morning to continue working on it. :-) I think Eamon will sleep in for another 20 mins, at least.
+
+The next step is to [allocate a public IP address](https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#kubernetes-public-ip-address).
