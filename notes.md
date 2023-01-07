@@ -48,4 +48,6 @@ Wee! I feel great. My firewall rules match the output in Learn Kubernetes the Ha
 ### 7 Jan 2023
 I'm so excited about this project that I woke up on a Saturday morning to continue working on it. :-) I think Eamon will sleep in for another 20 mins, at least.
 
-The next step is to [allocate a public IP address](https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#kubernetes-public-ip-address).
+The next step is to [allocate a public IP address](https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#kubernetes-public-ip-address). Done: see commit df108a4.
+
+Next up: [creating the VMs](https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#compute-instances) but Eamon is up.
