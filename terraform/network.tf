@@ -17,8 +17,8 @@ module "subnets" {
 
   subnets = [
     {
-      subnet_name   = "kubernetes"
-      subnet_ip     = "10.240.0.0/24"
+      subnet_name   = "kubernetes" # TODO maybe rename this to VMs. Also parametrize this name
+      subnet_ip     = var.vm_subnet_cidr
       subnet_region = var.region
     }
   ]

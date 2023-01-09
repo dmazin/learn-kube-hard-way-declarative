@@ -120,4 +120,6 @@ In fact, I think that I should get rid of my directory structure and replace it 
 
 Ah, of course, I have a set of TF state for each directory. I have no idea how to merge it, and there is little benefit to trying. I will just destroy everything and start over. Thank you `tf destroy`!
 
-Cool, I now have a flat structure. 
+Cool, I now have a flat structure. (see commit 144c765).
+
+(Some wrangling later) Yay! I have the controller instances running and I can SSH into them!
