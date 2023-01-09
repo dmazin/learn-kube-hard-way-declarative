@@ -117,3 +117,7 @@ I'll be able to use this SA (call it control-plane) when creating the instance t
 Interesting. So, I want to reference the control-plane SA (which I defined in the iam/ dir) in the VM template (which I defined in the vms/ dir). Turns out, this is tricky. Well, not tricky. It's just something one must think about. There is no way to pass the output of one directory to another. However, I can do two things: flatten the structure, so that there are no directories – only files. Or, I can import the info I need as `data` blocks.
 
 In fact, I think that I should get rid of my directory structure and replace it with files. Only the `main.tf` files vary between my dirs, and so repeating the other files (e.g. variables.tf) is senseless. I will just use different files.
+
+Ah, of course, I have a set of TF state for each directory. I have no idea how to merge it, and there is little benefit to trying. I will just destroy everything and start over. Thank you `tf destroy`!
+
+Cool, I now have a flat structure. 
