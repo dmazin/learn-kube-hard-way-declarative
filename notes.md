@@ -103,4 +103,11 @@ But I can kind of bluster my way through this. The intent of logging-write,monit
 
 For monitoring, I think the important thing is that the compute instances need to be able to write metrics, so I'll grant [roles/monitoring.metricWriter](https://cloud.google.com/iam/docs/understanding-roles#monitoring.metricWriter). For logging, I'll grant [roles/logging.logWriter](https://cloud.google.com/iam/docs/understanding-roles#logging.logWriter).
 
+Oh, by the way, I can tell what role the storage-ro access scope might map to, but I do not understand why the instances might need it. So I'll leave it for now. Also, I am sure that the instances will need some compute roles – we'll see. And, finally, I did figure out that the service-management and service-control scopes map to [these roles](https://cloud.google.com/service-infrastructure/docs/service-management/access-control).
+
 Of course, the other thing I need to do is create the service accounts used by the VMs.
+
+A TODO:
+- [ ] Rename the project var to project_id. This is the real name of the thing I'm referring to: it's the ID. It's unique across GCP.
+
+OK, I am failing to create the service accounts and assign the roles to it. I think that is probably because my service account is an editor, not an owner. I will make it an owner.

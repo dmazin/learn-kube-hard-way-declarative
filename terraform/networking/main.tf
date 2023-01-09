@@ -115,6 +115,6 @@ module "external_address" {
   project_id = var.project
   region     = var.region
 
-  names = ["kubernetes-the-hard-way"]
+  names        = ["kubernetes-the-hard-way"]
   address_type = "EXTERNAL"
 }
