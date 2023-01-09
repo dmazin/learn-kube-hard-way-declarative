@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"service_accounts-control_plane","Source":"registry.terraform.io/terraform-google-modules/service-accounts/google","Version":"4.1.1","Dir":".terraform/modules/service_accounts-control_plane"}]}
