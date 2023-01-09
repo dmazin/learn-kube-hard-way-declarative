@@ -51,3 +51,56 @@ I'm so excited about this project that I woke up on a Saturday morning to contin
 The next step is to [allocate a public IP address](https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#kubernetes-public-ip-address). Done: see commit df108a4.
 
 Next up: [creating the VMs](https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#compute-instances) but Eamon is up.
+
+
+### 9 Jan 2023
+The [TF module for VMs](https://github.com/terraform-google-modules/terraform-google-vm/tree/master/modules/compute_instance) seems to force you to create a template, and only from that template you can create VMs. That is just fine with me. It forces a little DRYness. This is not really a challenge. The challenge is converting the command-line arguments to the declarative form (I mean, that is the point of this entire project, but I am now running into a bit where I'm not super clear what to do next.) Here is how Hightower creates the control plane VMs.
+
+- [ ] Oh wait, one TODO before I forget: when [creating the kubernetes-the-hard-way-allow-internal firewall rule](https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#firewall-rules), Hightower adds `10.200.0.0/16` to the source range which I did not. This is the range for the pods themselves; for some reason he does not actually create a subnet. I am not adding this yet, but I do wonder if maybe I should just create a subnet for tidiness.
+
+Anyway, back to the VMs. Here is how Hightower creates them.
+```bash
+for i in 0 1 2; do
+  gcloud compute instances create controller-${i} \
+    --async \
+    --boot-disk-size 200GB \
+    --can-ip-forward \
+    --image-family ubuntu-2004-lts \
+    --image-project ubuntu-os-cloud \
+    --machine-type e2-standard-2 \
+    --private-network-ip 10.240.0.1${i} \
+    --scopes compute-rw,storage-ro,service-management,service-control,logging-write,monitoring \
+    --subnet kubernetes \
+    --tags kubernetes-the-hard-way,controller
+done
+```
+
+These are the flags I don't understand.
+- can-ip-forward
+- scopes
+
+The scopes trip me up because I am not sure at all what they are. How do they relate to service account roles? What are these? `--help` is unclear. What about the docs? OK, here's what the docs have to say.
+> Access scopes are the legacy method of specifying authorization for your instance.
+
+OK.
+
+> IAM restricts access to APIs based on the IAM roles that are granted to the service account.
+> Access scopes potentially further limit access to API methods.
+
+And...
+
+> The best practice is to set the full cloud-platform access scope on the instance, then control the service account's access using IAM roles.
+
+OK, so I understand scopes now. Scopes apply to VMs. They relate to OAuth, which is why they're called scopes. They control the requests made by the gcloud CLI and client libs running on the VM. But they do not affect gRPCs (I guess because they are legacy). The way they relate to IAM roles is that they are the older form of authorization.
+
+A decision: should I just use scopes, and come back to it later, or should I improve? I want to improve. That way if someone actually reads my work, they are learning best practices. I just have to figure out what roles the scopes map to.
+
+The scopes: `compute-rw,storage-ro,service-management,service-control,logging-write,monitoring`
+
+Man, the documentation for these is non-existent. Does `compute-rw` mean that the instance is able to create/edit compute resources? That's a little surprising. I don't think we'd want that. Here is the crux: because I don't know the goal of the scopes, and because there is no documented scope-to-role mapping, I don't know what roles to use.
+
+But I can kind of bluster my way through this. The intent of logging-write,monitoring is clear enough, and I'll figure out what roles it maps to. For the other scopes, I simply will pass over them, and if I am unable to do something in the future due to a permissions issue, I'll be able to add the new permission thanks to the error message.
+
+For monitoring, I think the important thing is that the compute instances need to be able to write metrics, so I'll grant [roles/monitoring.metricWriter](https://cloud.google.com/iam/docs/understanding-roles#monitoring.metricWriter). For logging, I'll grant [roles/logging.logWriter](https://cloud.google.com/iam/docs/understanding-roles#logging.logWriter).
+
+Of course, the other thing I need to do is create the service accounts used by the VMs.
