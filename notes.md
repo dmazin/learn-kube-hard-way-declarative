@@ -110,4 +110,6 @@ Of course, the other thing I need to do is create the service accounts used by t
 A TODO:
 - [ ] Rename the project var to project_id. This is the real name of the thing I'm referring to: it's the ID. It's unique across GCP.
 
-OK, I am failing to create the service accounts and assign the roles to it. I think that is probably because my service account is an editor, not an owner. I will make it an owner.
+OK, I am failing to create the service accounts and assign the roles to it. I think that is probably because my service account is an editor, not an owner. I will make it an owner. (See commit df7b017). Yep, that did the trick! SA created.
+
+I'll be able to use this SA when creating the instance template. On to that...
