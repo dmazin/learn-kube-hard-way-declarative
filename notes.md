@@ -122,4 +122,4 @@ Ah, of course, I have a set of TF state for each directory. I have no idea how t
 
 Cool, I now have a flat structure. (see commit 144c765).
 
-(Some wrangling later) Yay! I have the controller instances running and I can SSH into them!
+(Some wrangling later) Yay! I have the controller instances running and I can SSH into them! (See commit a10f0d3)
