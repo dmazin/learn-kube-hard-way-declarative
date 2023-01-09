@@ -112,4 +112,8 @@ A TODO:
 
 OK, I am failing to create the service accounts and assign the roles to it. I think that is probably because my service account is an editor, not an owner. I will make it an owner. (See commit df7b017). Yep, that did the trick! SA created.
 
-I'll be able to use this SA when creating the instance template. On to that...
+I'll be able to use this SA (call it control-plane) when creating the instance template. On to that...
+
+Interesting. So, I want to reference the control-plane SA (which I defined in the iam/ dir) in the VM template (which I defined in the vms/ dir). Turns out, this is tricky. Well, not tricky. It's just something one must think about. There is no way to pass the output of one directory to another. However, I can do two things: flatten the structure, so that there are no directories – only files. Or, I can import the info I need as `data` blocks.
+
+In fact, I think that I should get rid of my directory structure and replace it with files. Only the `main.tf` files vary between my dirs, and so repeating the other files (e.g. variables.tf) is senseless. I will just use different files.

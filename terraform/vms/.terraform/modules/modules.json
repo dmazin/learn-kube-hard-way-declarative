@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"compute_instance","Source":"registry.terraform.io/terraform-google-modules/vm/google","Version":"7.9.0","Dir":".terraform/modules/compute_instance"},{"Key":"instance_template","Source":"registry.terraform.io/terraform-google-modules/vm/google","Version":"7.9.0","Dir":".terraform/modules/instance_template"}]}
