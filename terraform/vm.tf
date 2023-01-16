@@ -21,7 +21,9 @@ module "controller_instance_template" {
   source_image_family  = "ubuntu-2204-lts"
   source_image_project = "ubuntu-os-cloud"
 
-  tags = ["kubernetes-the-hard-way", "controller"]
+  labels = {
+    role = "controller"
+  }
 
   metadata = {
     enable-oslogin = "TRUE"
@@ -68,7 +70,9 @@ module "worker_instance_template" {
   source_image_family  = "ubuntu-2204-lts"
   source_image_project = "ubuntu-os-cloud"
 
-  tags = ["kubernetes-the-hard-way", "worker"]
+  labels = {
+    role = "worker"
+  }
 
   metadata = {
     enable-oslogin = "TRUE"
