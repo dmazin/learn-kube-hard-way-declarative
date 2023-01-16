@@ -86,7 +86,7 @@ module "worker_compute_instances" {
 
   static_ips = [for i in range(3) : format("%s%s", substr(var.vm_subnet_cidr, 0, length(var.vm_subnet_cidr) - 4), 20 + i)]
 
-  hostname            = "controller"
+  hostname            = "worker"
   instance_template   = module.worker_instance_template.self_link
   deletion_protection = false
 }
