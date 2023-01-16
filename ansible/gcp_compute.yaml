@@ -1,0 +1,13 @@
+plugin: google.cloud.gcp_compute
+projects:
+  - learn-kube-hard-way-dmazin
+filters:
+service_account_file: ~/.google/learn-kube-hard-way-dmazin/owner-sa-private-key.json
+auth_kind: serviceaccount
+scopes:
+ - 'https://www.googleapis.com/auth/cloud-platform'
+keyed_groups:
+  - prefix: gcp
+    key: labels
+hostnames:
+compose:

@@ -1,0 +1,6 @@
+---
+- name: Set up controllers
+  hosts: gcp_role_controller
+  tasks:
+  - name: Test
+    shell: "echo foo"
