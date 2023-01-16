@@ -10,7 +10,7 @@ module "controller_instance_template" {
   # NB If I add a special Pod subnetwork, I will need to parametrize the "kubernetes"
   # bit here. Otherwise, if I don't add the subnet, I will just refer to the first element
   # of the subnets map.
-  subnetwork = module.subnets.subnets["${var.region}/kubernetes"].self_link
+  subnetwork     = module.subnets.subnets["${var.region}/kubernetes"].self_link
   can_ip_forward = "true"
 
   service_account = {
@@ -59,7 +59,7 @@ module "worker_instance_template" {
   # NB If I add a special Pod subnetwork, I will need to parametrize the "kubernetes"
   # bit here. Otherwise, if I don't add the subnet, I will just refer to the first element
   # of the subnets map.
-  subnetwork = module.subnets.subnets["${var.region}/kubernetes"].self_link
+  subnetwork     = module.subnets.subnets["${var.region}/kubernetes"].self_link
   can_ip_forward = "true"
 
   service_account = {

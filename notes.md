@@ -133,3 +133,57 @@ So, next I need to provision the nodes. Ah.. actually, I am super curious how we
 Sounds like [OS Login](https://cloud.google.com/compute/docs/oslogin) is "the recommended way to manage many users across multiple instances or projects". Which honestly describes any realistic project.
 
 Here's [how to enable OS login when creating an instance](https://cloud.google.com/compute/docs/oslogin/set-up-oslogin#enable_os_login_during_vm_creation).
+
+I am now reading [this tutorial on using OS login with Ansible](https://alex.dzyoba.com/blog/gcp-ansible-service-account/).
+
+However, I want to say that I got Ansible inventory to work!
+
+```
+-> % ansible-inventory --list -i gcp_compute.yaml | jq "._meta.hostvars[].name"
+"controller-001"
+"controller-002"
+"controller-003"
+"worker-001"
+"worker-002"
+"worker-003"
+```
+
+Anyway, now I need to do OS login for Ansible. I need to set up a separate SA for Ansible, and assign it [the right roles](https://cloud.google.com/compute/docs/oslogin/set-up-oslogin) as well as enable an OS login ssh key for it. I'm going to see if giving the SA `roles/compute.osLogin` will make logins work.
+
+Damn, I wanted to do this, but unfortunately, you need to be auth'ed as the SA you're uploading the key for. So this bit will have to happen via gcloud CLI.
+# resource "google_os_login_ssh_public_key" "cache" {
+#   user = module.service_account_ansible.service_account.email
+#   key  = file("../ansible/ssh-key-ansible-sa.pub")
+# }
+
+```
+│ Error: Error creating SSHPublicKey: googleapi: Error 403: End user credentials must match the user specified in the request. Request for user [ ansible@learn-kube-hard-way-dmazin.iam.gserviceaccount.com] does not match the credential for [owner-sa@learn-kube-hard-way-dmazin.iam.gserviceaccount.com].
+```
+
+Here's how. (These are quick-and-dirty steps; I'll need to clean them up later [i.e. store the key not in the cwd])
+1. Generate the key...: `ssh-keygen -f ssh-key-ansible-sa`
+2. Impersonate the account
+3. Upload the key
+
+(These are from the OS login with Ansible blog post)
+
+Anyway, after that actually login still doesn't work:
+```
+ERROR: (gcloud.compute.start-iap-tunnel) Error while connecting [4033: 'not authorized'].
+kex_exchange_identification: Connection closed by remote host
+Connection closed by UNKNOWN port 65535
+```
+
+It might be because I need to assign more roles to th SA. Not sure!
+
+Hmm, I gave the Ansible SA the `roles/iam.serviceAccountUser` role for the VM SA, but still no luck. Weird! According to the docs it should work now.
+
+I'm going to see what happens when I also add `roles/viewer` to the Ansible SA, even though I don't think this should be necessary.
+
+No, that did not help. I'll remove the binding.
+
+My last guess is that perhaps the VM has more than one SA.
+
+Hmm, no... that is the only SA used by that VM.
+
+OK, next time, I think. It's 16:43. Maybe I need to twiddle with the SSH key or something.
