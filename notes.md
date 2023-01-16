@@ -123,3 +123,13 @@ Ah, of course, I have a set of TF state for each directory. I have no idea how t
 Cool, I now have a flat structure. (see commit 144c765).
 
 (Some wrangling later) Yay! I have the controller instances running and I can SSH into them! (See commit a10f0d3)
+
+### 16 Jan 2023
+
+Lots of time has passed. Thanks to these notes, I know where I left off. I think where I want to continue is to finish out all the Terraform steps before moving on to any Ansible stuff.
+
+So, next I need to provision the nodes. Ah.. actually, I am super curious how we can make Ansible SSH into the instances without creating special SSH keys. Can it use IAP somehow? So, next I'm going to read about best practices for SSH against a VM.
+
+Sounds like [OS Login](https://cloud.google.com/compute/docs/oslogin) is "the recommended way to manage many users across multiple instances or projects". Which honestly describes any realistic project.
+
+Here's [how to enable OS login when creating an instance](https://cloud.google.com/compute/docs/oslogin/set-up-oslogin#enable_os_login_during_vm_creation).

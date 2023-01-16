@@ -22,6 +22,10 @@ module "controller_instance_template" {
   source_image_project = "ubuntu-os-cloud"
 
   tags = ["kubernetes-the-hard-way", "controller"]
+
+  metadata = {
+    enable-oslogin = "TRUE"
+  }
 }
 
 module "controller_compute_instances" {
@@ -65,6 +69,10 @@ module "worker_instance_template" {
   source_image_project = "ubuntu-os-cloud"
 
   tags = ["kubernetes-the-hard-way", "worker"]
+
+  metadata = {
+    enable-oslogin = "TRUE"
+  }
 }
 
 module "worker_compute_instances" {
