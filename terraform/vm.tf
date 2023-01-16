@@ -24,8 +24,7 @@ module "controller_instance_template" {
   tags = ["kubernetes-the-hard-way", "controller"]
 }
 
-# TODO rename me to controller_compute_instances
-module "compute_instance" {
+module "controller_compute_instances" {
   source  = "terraform-google-modules/vm/google//modules/compute_instance"
   version = "~> 7.9.0"
   region  = var.region
@@ -68,7 +67,6 @@ module "worker_instance_template" {
   tags = ["kubernetes-the-hard-way", "worker"]
 }
 
-# TODO rename me to controller
 module "worker_compute_instances" {
   source  = "terraform-google-modules/vm/google//modules/compute_instance"
   version = "~> 7.9.0"
