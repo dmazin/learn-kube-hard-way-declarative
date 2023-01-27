@@ -187,3 +187,35 @@ My last guess is that perhaps the VM has more than one SA.
 Hmm, no... that is the only SA used by that VM.
 
 OK, next time, I think. It's 16:43. Maybe I need to twiddle with the SSH key or something.
+
+Does SSHing as the owner SA work? Yes, it does! So it's a permissions thing.
+
+Out of curiosity, what if I assign the `roles/compute.osAdminLogin` role instead? (Actually I'll need to use this role anyway since the Ansible playbooks will involve sudo shit)
+
+Nah, still doesn't work. Actually looking at the error, I think maybe I need to enable another permission for IAP tunnelling:
+```
+ERROR: (gcloud.compute.start-iap-tunnel) Error while connecting [4033: 'not authorized'].
+kex_exchange_identification: Connection closed by remote host
+```
+
+Maybe I need to grant [roles/iap.tunnelResourceAccessor](https://cloud.google.com/iap/docs/managing-access#iap.tunnelResourceAccessor).
+
+Damn, still doesn't work! Crazy!
+
+I just looked at the Ansible article again, and these are the roles they set.
+```
+    'roles/compute.instanceAdmin' \
+    'roles/compute.instanceAdmin.v1' \
+    'roles/compute.osAdminLogin' \
+    'roles/iam.serviceAccountUser'
+```
+
+Well, I'm only setting two of these. Let me see if things work if I also set instanceAdmin.
+
+That worked! Huh, I wonder why that isn't mentioned in the OS Login docs. What permissions does this grant? Well, [tons](https://cloud.google.com/compute/docs/access/iam). But clearly whatever the SA needs, it's not a read-only permission, because I tried granting it `roles/viewer` before and that wasn't enough.
+
+OK, I can live with the Ansible account having `roles/compute.instanceAdmin`. I guess even on a project level. This is definitely one of those things that I think needs improvement.
+
+(For the record, I've been logging in with `gcloud compute ssh worker-001`)
+
+So, having done all this, funny enough this is *not* how we will login. Ansible will use regular old ssh. That is why we need to upload keys.

@@ -20,7 +20,10 @@ module "service_account_ansible" {
   names        = ["ansible"]
   descriptions = ["Used by Ansible."]
   project_roles = [
-    "${var.project}=>roles/compute.osLogin",
+    # "${var.project}=>roles/compute.osLogin",
+    "${var.project}=>roles/compute.osAdminLogin",
+    "${var.project}=>roles/iap.tunnelResourceAccessor",
+    "${var.project}=>roles/compute.instanceAdmin",
   ]
 }
 
